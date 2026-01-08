@@ -1,5 +1,6 @@
 # backend/app.py
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from gtts import gTTS
 import base64
@@ -51,6 +52,10 @@ def ollama_translate(text, source, target):
 @app.post("/translate")
 def translate(req: TranslateRequest):
     translated = ollama_translate(req.text, LANGUAGES[req.source_lang], LANGUAGES[req.target_lang])
+    text = req.get("text", "")
+    target_lang = req.get("target_lang", "en")
+
+    
 
     # gTTS a base64
     tts = gTTS(translated, lang=LANGUAGES[req.target_lang])

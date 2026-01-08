@@ -27,7 +27,7 @@ async function translateText() {
     const source = document.getElementById("sourceLang").value;
     const target = document.getElementById("targetLang").value;
 
-    const res = await fetch("https://TU_BACKEND_URL/translate", {
+    const res = await fetch("/api/translate", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({text, source_lang: source, target_lang: target})
