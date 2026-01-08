@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>AAC Universal Web</title>
+</head>
+<body>
+<h1>AAC Universal Web</h1>
+<textarea id="inputText" rows="5" cols="50" placeholder="Escribe tu mensaje"></textarea>
+<br>
+<select id="sourceLang">
+  <option value="Español">Español</option>
+  <option value="English">English</option>
+</select>
+<select id="targetLang">
+  <option value="English">English</option>
+  <option value="Español">Español</option>
+</select>
+<br>
+<button onclick="translateText()">Traducir y hablar</button>
+<p id="outputText"></p>
+<audio id="audio" controls></audio>
+
+<script>
+async function translateText() {
+    const text = document.getElementById("inputText").value;
+    const source = document.getElementById("sourceLang").value;
+    const target = document.getElementById("targetLang").value;
+
+    const res = await fetch("https://TU_BACKEND_URL/translate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text, source_lang: source, target_lang: target})
+    });
+
+    const data = await res.json();
+    document.getElementById("outputText").innerText = data.translated_text;
+
+    const audio = document.getElementById("audio");
+    audio.src = "data:audio/mp3;base64," + data.audio_base64;
+    audio.play();
+}
+</script>
+</body>
+</html>
