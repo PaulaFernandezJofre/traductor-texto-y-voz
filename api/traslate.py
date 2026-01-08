@@ -12,13 +12,19 @@ async def translate(req: Request):
     data = await req.json()
     text = data.get("text", "")
     target_lang = data.get("target_lang", "en")
+    
+    # Simulamos traducción por ahora (devuelve el mismo texto)
+    translated_text = text  # Aquí puedes agregar API real de traducción después
 
-    # Generar audio en base64
-    tts = gTTS(text, lang=target_lang)
+    # Generar audio en base64 con gTTS
+    tts = gTTS(translated_text, lang=target_lang)
     tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
     tts.save(tmp_file.name)
     with open(tmp_file.name, "rb") as f:
         audio_b64 = base64.b64encode(f.read()).decode()
     os.unlink(tmp_file.name)
 
-    return JSONResponse({"translated_text": text, "audio_base64": audio_b64})
+    return JSONResponse({
+        "translated_text": translated_text,
+        "audio_base64": audio_b64
+    })
