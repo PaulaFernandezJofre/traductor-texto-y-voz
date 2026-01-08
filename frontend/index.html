@@ -2,19 +2,26 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AAC Universal Web</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+textarea { width: 100%; font-size: 1rem; padding: 10px; }
+select, button { font-size: 1rem; padding: 8px; margin-top: 10px; }
+audio { width: 100%; margin-top: 10px; }
+</style>
 </head>
 <body>
 <h1>AAC Universal Web</h1>
-<textarea id="inputText" rows="5" cols="50" placeholder="Escribe tu mensaje"></textarea>
+<textarea id="inputText" rows="5" placeholder="Escribe tu mensaje"></textarea>
 <br>
 <select id="sourceLang">
-  <option value="Español">Español</option>
-  <option value="English">English</option>
+  <option value="es">Español</option>
+  <option value="en">English</option>
 </select>
 <select id="targetLang">
-  <option value="English">English</option>
-  <option value="Español">Español</option>
+  <option value="en">English</option>
+  <option value="es">Español</option>
 </select>
 <br>
 <button onclick="translateText()">Traducir y hablar</button>
@@ -24,13 +31,12 @@
 <script>
 async function translateText() {
     const text = document.getElementById("inputText").value;
-    const source = document.getElementById("sourceLang").value;
     const target = document.getElementById("targetLang").value;
 
     const res = await fetch("/api/translate", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({text, source_lang: source, target_lang: target})
+        body: JSON.stringify({text, target_lang: target})
     });
 
     const data = await res.json();
